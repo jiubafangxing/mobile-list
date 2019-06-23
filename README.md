@@ -6,11 +6,10 @@ Introduction
 
 
 Features
-1 目前仅依赖pinyin4j, 即一个及其简单的java 工程
+1. 目前仅依赖pinyin4j, 即一个及其简单的java 工程
 
 
 Development
-该工程旨在通过模拟手机通讯录，完成内容搜索
 1. 可以通过修改 MobileConstant 的配置 修改生成文件路径
 2. 通过BootApp即可运行
 3. 目前功能： 通讯录数据生成， 索引建立
