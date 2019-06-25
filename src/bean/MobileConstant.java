@@ -31,4 +31,11 @@ public class MobileConstant {
      * 用来填补空白
      */
     public static final String BLANK = "   ";
+
+    public  static final String INDEX_SUFFIX_PATH = "index";
+    public  static final String INDEX_FILETYPE = "txt";
+    public  static final String INDEX_PREFIX_PATH = MobileConstant.PARENT_PATH + File.separator + "index";
+    public static final String INDEX_SPILX = ";";
+    public static final String INNER_DATA_SPILX = "=";
+
 }

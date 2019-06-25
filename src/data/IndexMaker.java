@@ -3,6 +3,7 @@ package data;
 import bean.MobileConstant;
 import bean.MobileMetaData;
 import net.sourceforge.pinyin4j.PinyinHelper;
+import util.FileNameUtil;
 
 import java.io.*;
 import java.util.*;
@@ -15,9 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class IndexMaker {
     private File file;
     private List<File> dataFileList = new LinkedList<>();
-    private static final String prefix_path = MobileConstant.PARENT_PATH + File.separator + "index";
-    private static final String suffix_path = "index";
-    private static final String fileType = "txt";
+
 
 
     public IndexMaker(File file) {
@@ -59,7 +58,7 @@ public class IndexMaker {
     private void saveIndex(Map<String, List<MobileMetaData>> reSortMobileData) throws IOException {
         for (Map.Entry<String, List<MobileMetaData>> next : reSortMobileData.entrySet()) {
             List<MobileMetaData> value = next.getValue();
-            String newfileName = prefix_path + File.separator + next.getKey() + "-" + suffix_path + "." + fileType;
+            String newfileName = MobileConstant.INDEX_PREFIX_PATH + File.separator + next.getKey() + "-" + MobileConstant.INDEX_SUFFIX_PATH + "." + MobileConstant.INDEX_FILETYPE;
             //删除旧内容
             FileWriter fileWriter = new FileWriter(newfileName);
             fileWriter.write("");
@@ -70,10 +69,29 @@ public class IndexMaker {
             RandomAccessFile randomAccessFile = new RandomAccessFile(newfileName, "rw");
             StringBuilder datatoStore = new StringBuilder();
             for (MobileMetaData md : value) {
-                datatoStore.append(md.getName()).append("=").append(md.getFileName()).append("=").append(md.getPosition()).append(";");
+                StringBuilder datatoStore2 = new StringBuilder();
+                datatoStore2.append(md.getName()).append("=").append(md.getFileName()).append("=").append(md.getPosition()).append(";");
+
+                System.out.println(datatoStore2.toString().getBytes().length);
+                String fillBlankStr = fillIntoBlank(datatoStore2.toString());
+                System.out.println(fillBlankStr.getBytes().length+"|");
+                datatoStore.append(fillBlankStr);
             }
             randomAccessFile.write(datatoStore.toString().getBytes());
         }
+    }
+
+    /**填充" "
+     * @param value
+     * @return
+     */
+    private  String fillIntoBlank(String value) {
+        int size = FileNameUtil.getMaxSize() - value.getBytes().length;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Integer i = 0; i < size; i++) {
+            stringBuilder.append(" ");
+        }
+        return value + stringBuilder.toString();
     }
 
     /**
